@@ -9,7 +9,7 @@ client = OpenAI(api_key=openai_api_key)
 
 def get_response(prompt):
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4-0125-preview",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt}
@@ -18,7 +18,7 @@ def get_response(prompt):
     return completion.choices[0].message.content
 
 # Streamlit app layout
-st.title("Chat with GPT-3.5 Turbo")
+st.title("Chat with GPT-4 Turbo")
 
 # Session state to store chat history
 if 'chat_history' not in st.session_state:
@@ -32,7 +32,7 @@ def update_chat_history():
         formatted_user_input = f"**You:** {user_input}"
         st.session_state.chat_history.append(formatted_user_input)
         model_response = get_response(user_input)
-        formatted_model_response = f"**GPT-3.5 Turbo:** {model_response}"
+        formatted_model_response = f"**GPT-4 Turbo:** {model_response}"
         st.session_state.chat_history.append(formatted_model_response)
         st.session_state.user_input_sidebar = ""  # Clear input box after sending
 
@@ -48,7 +48,9 @@ def delete_chat_history():
 # Sidebar for input and buttons
 with st.sidebar:
     # User input in sidebar
-    st.text_input("Enter your message here:", key="user_input_sidebar", on_change=None)
+
+    st.text_area("Enter your message here:", key="user_input_sidebar", height=200)
+    # st.text_input("Enter your message here:", key="user_input_sidebar", on_change=None)
     
     # Send button - triggers manual send
     send_button = st.button("Send", on_click=manual_send)
